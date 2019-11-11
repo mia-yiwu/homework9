@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Drawing Area</title>
+	<!-- You can add your style here rather than in an external style sheet. -->
+	<style>
+		canvas {
+			border: 5px solid #d3d3d3;
+			background-color: #f1f1f1;
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- DO NOT MODIFY THIS HTML -->
+	<canvas id="myCanvas" width="350" height="500"></canvas>
+	<input type="color" id="picker" />
+</body>
+<script>
+	var myCanvas = document.getElementById('myCanvas'),
+		pan = myCanvas.getContext("2d"),
+		paint = false,
+		color = '#000000',
+		x,
+		y;
+	myCanvas.width = window.innerWidth * 0.8
+	myCanvas.height = window.innerHeight * 0.8
+	function draw(x, y) {
+		pan.beginPath();
+		pan.arc(x, y, 10, 0, 10 * Math.PI);
+		pan.fillStyle = color;
+		pan.fill();
+	}
+
+	myCanvas.addEventListener('mousedown', function (e) {
+		paint = true;
+		x = e.offsetX;
+		y = e.offsetY;
+		draw(x, y)
+	})
+
+	myCanvas.addEventListener('mousemove', function (e) {
+		if (paint) {
+			var nx = e.offsetX,
+				ny = e.offsetY;
+			x = nx;
+			y = ny;
+			draw(nx, ny)
+		}
+	})
+
+	myCanvas.addEventListener('mouseup', function (e) {
+		paint = false;
+	})
+
+	myCanvas.addEventListener('mouseleave', function (e) {
+		paint = false;
+	})
+
+	window.addEventListener('keydown', function (e) {
+		if (e.key.toLocaleLowerCase() == 'r') {
+			color = 'red'
+		}
+		else if (e.key.toLocaleLowerCase() == 'g') {
+			color = 'green'
+		}
+		else if (e.key.toLocaleLowerCase() == 'b') {
+			color = 'blue'
+		}
+		else if (e.key.toLocaleLowerCase() == 'y') {
+			color = 'yellow'
+		}
+		else if (e.key == ' ') {
+			pan.clearRect(0, 0, myCanvas.width, myCanvas.height);
+		}
+		else if (e.key == 'ArrowUp') {
+			paint = false;
+		}
+		else if (e.key == 'ArrowDown') {
+			paint = true;
+		}
+	})
+
+	document.getElementById('picker').addEventListener('change', function () {
+		color = this.value
+	})
+
+
+</script>
+
+</html>
